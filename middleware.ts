@@ -3,7 +3,6 @@ import NextAuth from "next-auth";
 import authConfig from "@/auth.config";
 import {
   DEFAULT_LOGIN_REDIRECT,
-  adminRoutes,
   apiAuthPrefix,
   authRoutes,
   publicRoutes,
@@ -19,7 +18,6 @@ export default auth(async (req) => {
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
-  const isAdminRoute = adminRoutes.includes(nextUrl.pathname);
 
   if (isApiAuthRoute) {
     return NextResponse.next();
@@ -37,10 +35,6 @@ export default auth(async (req) => {
   }
 
   const role = await currentRole();
-
-  if (isAdminRoute && role !== "ADMIN") {
-    return Response.redirect(new URL("/", nextUrl));
-  }
 
   const userId = await currentUserId();
 

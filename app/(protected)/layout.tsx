@@ -14,7 +14,6 @@ import {
   ShoppingCart,
   Users,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -39,6 +38,7 @@ interface ProtectedLayoutProps {
 
 const ProtectedLayout = async ({ children }: ProtectedLayoutProps) => {
   const session = await auth();
+
   return (
     <SessionProvider session={session}>
       <div className={`${font.className}`}>
@@ -78,31 +78,35 @@ const ProtectedLayout = async ({ children }: ProtectedLayoutProps) => {
                     <LineChart className="h-4 w-4" />
                     Trending
                   </Link>
-                  <Link
-                    href="/profile"
-                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-                  >
-                    <Users className="h-4 w-4" />
-                    Profile
-                  </Link>
+                  {session?.user.id && (
+                    <Link
+                      href="/profile"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                    >
+                      <Users className="h-4 w-4" />
+                      Profile
+                    </Link>
+                  )}
                 </nav>
               </div>
-              <div className="mt-auto p-4">
-                <Card x-chunk="dashboard-02-chunk-0">
-                  <CardHeader className="p-2 pt-0 md:p-4">
-                    <CardTitle className="text-lg">
-                      Have any Complaint
-                    </CardTitle>
-                    <CardDescription>
-                      Share your concerns anonymously and let us know how we can
-                      help!
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
-                    <CreateComplaint />
-                  </CardContent>
-                </Card>
-              </div>
+              {session?.user.id && (
+                <div className="mt-auto p-4">
+                  <Card x-chunk="dashboard-02-chunk-0">
+                    <CardHeader className="p-2 pt-0 md:p-4">
+                      <CardTitle className="text-lg">
+                        Have any Complaint
+                      </CardTitle>
+                      <CardDescription>
+                        Share your concerns anonymously and let us know how we
+                        can help!
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
+                      <CreateComplaint />
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
             </div>
           </div>
           <div className="flex flex-col max-h-screen overflow-hidden border">
@@ -141,13 +145,15 @@ const ProtectedLayout = async ({ children }: ProtectedLayoutProps) => {
                       <LineChart className="h-5 w-5" />
                       Trending
                     </Link>
-                    <Link
-                      href="/profile"
-                      className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                    >
-                      <Users className="h-5 w-5" />
-                      Profile
-                    </Link>
+                    {session?.user.id && (
+                      <Link
+                        href="/profile"
+                        className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                      >
+                        <Users className="h-5 w-5" />
+                        Profile
+                      </Link>
+                    )}
                   </nav>
                 </SheetContent>
               </Sheet>
@@ -163,7 +169,7 @@ const ProtectedLayout = async ({ children }: ProtectedLayoutProps) => {
                   </div>
                 </form>
               </div>
-              <TopBar />
+              {session?.user.id && <TopBar />}
             </header>
             <main className="m-2 overflow-auto ">
               <Toaster />

@@ -1,9 +1,9 @@
 import PaginationBar from "@/components/shared/PaginationBar";
-import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { db } from "@/lib/db";
-import { ThumbsDown, ThumbsUp } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+import Share from "../_components/Share";
 
 interface ComplaintsProps {
   searchParams: {
@@ -52,6 +52,7 @@ const Trending: React.FC<ComplaintsProps> = async ({ searchParams }) => {
     skip: (currentPage - 1) * pageSize,
     take: pageSize,
   });
+
   return (
     <section className="space-y-4">
       {complaints.map((complaint) => (
@@ -66,14 +67,14 @@ const Trending: React.FC<ComplaintsProps> = async ({ searchParams }) => {
                 {getRelativeTime(complaint.createdAt.toISOString())}
               </span>
             </CardTitle>
-            <CardContent className="py-4">
+            <CardContent className="py-4 max-h-28 text-ellipsis overflow-hidden whitespace-wrap">
               <p className="text-gray-800">{complaint.description}</p>
             </CardContent>
           </Link>
-
-          <button className="text-xs text-green-600 hover:underline">
-            Comment
-          </button>
+          <div className="flex items-center gap-2">
+            <button className="text-sm">{complaint.views} views</button>
+            <Share id={complaint.id} />
+          </div>
         </Card>
       ))}
       {totalPages > 1 && (

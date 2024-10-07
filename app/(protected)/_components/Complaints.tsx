@@ -1,6 +1,7 @@
 import PaginationBar from "@/components/shared/PaginationBar";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { db } from "@/lib/db";
+import { Eye } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -68,9 +69,7 @@ const Complaints: React.FC<ComplaintsProps> = async ({ searchParams }) => {
             </CardContent>
           </Link>
 
-          <button className="text-xs text-green-600 hover:underline">
-            Comment
-          </button>
+          <button className="text-sm">{complaint.views} views</button>
         </Card>
       ))}
       {totalPages > 1 && (
