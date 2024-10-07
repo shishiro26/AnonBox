@@ -1,3 +1,4 @@
+"use client";
 import {
   Dialog,
   DialogContent,
@@ -82,7 +83,9 @@ const CreateComplaint = () => {
 
   return (
     <Dialog>
-      <DialogTrigger>+ Create</DialogTrigger>
+      <DialogTrigger className="w-full bg-black rounded h-7 text-white text-sm hover:bg-black/90">
+        Add a Complaint
+      </DialogTrigger>
       <DialogContent className="max-h-[90%] overflow-auto">
         <DialogHeader>
           <DialogTitle>Add a Complaint</DialogTitle>

@@ -78,3 +78,11 @@ export const ComplaintSchema = z.object({
     )
     .optional(),
 });
+
+export const CommentSchema = z.object({
+  complaintId: z.string().uuid(),
+  comment: z
+    .string()
+    .min(1, "Comment is required")
+    .max(1000, "Comment is too long"),
+});

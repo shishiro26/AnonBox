@@ -1,11 +1,13 @@
-import { auth, signOut } from "@/auth";
 import TopBar from "./_components/Topbar";
-export default async function Home() {
+import Complaints from "./_components/Complaints";
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: { query: string; page: string };
+}) {
   return (
     <section className="">
-      <div className="hidden md:block">
-        <TopBar />
-      </div>
+      <Complaints searchParams={searchParams} />
     </section>
   );
 }

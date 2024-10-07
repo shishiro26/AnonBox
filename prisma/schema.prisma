@@ -14,23 +14,28 @@ enum Priority {
 }
 
 model User {
-  id        String      @id @default(uuid()) @map("_id")
-  name      String?
-  email     String      @unique @map("email")
-  password  String
-  createdAt DateTime    @default(now()) @map("created_at")
-  Complaint Complaint[]
+  id            String          @id @default(uuid()) @map("_id")
+  name          String?
+  email         String          @unique @map("email")
+  password      String
+  createdAt     DateTime        @default(now()) @map("created_at")
+  Complaint     Complaint[]
+  Comment       Comment[]
+  ComplaintView ComplaintView[]
 }
 
 model Complaint {
-  id          String   @id @default(uuid()) @map("_id")
-  title       String
-  description String
-  createdAt   DateTime @default(now()) @map("created_at")
-  user        User     @relation(fields: [userId], references: [id])
-  userId      String
-  priority    Priority @default(LOW)
-  attachments File[]
+  id            String          @id @default(uuid()) @map("_id")
+  title         String
+  description   String
+  createdAt     DateTime        @default(now()) @map("created_at")
+  user          User            @relation(fields: [userId], references: [id])
+  userId        String
+  priority      Priority        @default(LOW)
+  attachments   File[]
+  Comment       Comment[]
+  ComplaintView ComplaintView[]
+  views         Int             @default(0)
 }
 
 model File {
@@ -40,4 +45,23 @@ model File {
   uploadedAt  DateTime  @default(now())
   complaint   Complaint @relation(fields: [complaintId], references: [id])
   complaintId String
+}
+
+model Comment {
+  id          String    @id @default(uuid()) @map("_id")
+  content     String
+  createdAt   DateTime  @default(now()) @map("created_at")
+  complaint   Complaint @relation(fields: [complaintId], references: [id])
+  complaintId String
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
+}
+
+model ComplaintView {
+  id          String    @id @default(uuid()) @map("_id")
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String    @unique
+  complaint   Complaint @relation(fields: [complaintId], references: [id])
+  complaintId String
+  viewedAt    DateTime  @default(now())
 }

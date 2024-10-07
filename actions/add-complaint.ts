@@ -8,6 +8,29 @@ import {
 import { auth } from "@/auth";
 import { UploadApiResponse } from "cloudinary";
 
+const determinePriority = (title: string, description: string): string => {
+  const lowerTitle = title.toLowerCase();
+  const lowerDescription = description.toLowerCase();
+
+  if (
+    lowerTitle.includes("urgent") ||
+    lowerDescription.includes("urgent") ||
+    lowerTitle.includes("important") ||
+    lowerDescription.includes("important")
+  ) {
+    return "HIGH";
+  }
+  if (
+    lowerTitle.includes("feedback") ||
+    lowerDescription.includes("feedback") ||
+    lowerTitle.includes("suggestion") ||
+    lowerDescription.includes("suggestion")
+  ) {
+    return "MEDIUM";
+  }
+  return "LOW";
+};
+
 export const createComplaint = async (formData: FormData) => {
   const file = await uploadPhotosToLocal(formData);
   const photos = await uploadPhotosToCloudinary(file);
@@ -27,10 +50,13 @@ export const createComplaint = async (formData: FormData) => {
       (photo as UploadApiResponse).public_id !== undefined
   );
 
+  const priority = determinePriority(title, description);
+
   const complaintData: any = {
     title: title,
     description: description,
     userId: userId,
+    priority: priority,
   };
 
   if (successfulUploads.length > 0) {
@@ -52,5 +78,5 @@ export const createComplaint = async (formData: FormData) => {
 
   revalidatePath("/");
 
-  return { success: "Bank details added!" };
+  return { success: "Complaint submitted successfully!" };
 };
