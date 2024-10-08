@@ -1,1 +1,27 @@
+# Ignore environment variables
 .env
+
+# Ignore Git files and directories
+.git
+.gitignore
+
+# Ignore VSCode settings
+.vscode
+
+# Ignore Dockerfile itself
+Dockerfile
+
+# Ignore node_modules to avoid unnecessary copying
+node_modules
+
+# Ignore build directories
+dist
+build
+out
+
+# Ignore logs
+*.log
+npm-debug.log*
+
+# Ignore any local environment files
+*.local
